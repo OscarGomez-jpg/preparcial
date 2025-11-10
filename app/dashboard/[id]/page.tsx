@@ -1,5 +1,6 @@
 'use client';
 
+import { useAuthStore } from "@/app/store/useAuthStore";
 import { ArrowBack } from "@mui/icons-material";
 import { Box, Button, Card, CardContent, CircularProgress, Divider, Typography } from "@mui/material";
 import { useParams, useRouter } from "next/navigation";
@@ -23,6 +24,7 @@ interface Post {
 export default function PostDetailPage() {
   const { id } = useParams();
   const router = useRouter();
+  const { token } = useAuthStore();
 
   const [posts, setPosts] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
@@ -32,7 +34,9 @@ export default function PostDetailPage() {
 
     async function fetchPost() {
       try {
-        const res = await fetch(`http://localhost:8000/posts/${id}`);
+        const res = await fetch(`http://localhost:8000/posts/${id}`, {
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        });
         const data = await res.json();
         setPosts(data);
       } catch (error) {

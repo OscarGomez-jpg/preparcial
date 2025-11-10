@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { Card, CardContent, Divider, Typography } from "@mui/material";
+import PostCard from "./PostCard";
 
 interface Comment {
   id: number;
@@ -38,15 +39,7 @@ export default function PostList() {
   return (
     <div>
       {posts.map((post) => (
-        <Card key={post.id} sx={{ mb: 3 }}>
-          <CardContent>
-            <Typography variant="body1">{post.content}</Typography>
-            <Divider sx={{ my: 1 }} />
-            <Typography variant="caption">
-              Comentarios: {post.comments.length}
-            </Typography>
-          </CardContent>
-        </Card>
+        <PostCard key={post.id} id={post.id} content={post.content} commentsCount={post.comments?.length || 0} />
       ))}
     </div>
   )
